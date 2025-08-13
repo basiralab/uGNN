@@ -268,9 +268,11 @@ Key libs:
 ## Citation
 
 If this repository is useful in your research, please cite:
+```
 @article{ugnn2025,
   title={GNN-based Unified Deep Learning},
   author={Furkan Pala, Islem Rekik},
   journal={arXiv preprint},
   year={2025}
 }
+```
