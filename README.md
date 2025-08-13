@@ -6,9 +6,19 @@ uGNN turns ordinary neural nets (MLPs, CNNs, GNNs) into **graphs**—weights bec
 
 #### (Accepted in PRIME, MICCAI 2025 Conference)
 
-## Architecture
 <!-- drop in your main figure -->
 <img alt="architecture" src="main_fig.png" />
+
+
+
+> **GNN-based Unified Deep Learning**
+>
+> Furkan Pala and Islem Rekik
+> 
+> BASIRA Lab, Imperial-X and Department of Computing, Imperial College London, London, UK
+>
+> **Abstract:** *Deep learning models often struggle to maintain robust generalizability in medical imaging, particularly under domain-fracture scenarios where distributional shifts arise due to varying imaging techniques, acquisition protocols, patient populations, demographics, and equipment. In practice, each hospital may need to develop and train distinct models-differing in functionality (i.e., learning task) and morphology including width and depth-to handle their local data distributions. For example, while one hospital may utilize Euclidean architectures such as MLPs and CNNs to process structured tabular data or regular grid-like image data, another hospital may need to deploy non-Euclidean architectures such as graph neural networks (GNNs) to process inherently irregular data like brain connectomes or other graph-structured biomedical information. However, how to train such heterogeneous models coherently across different datasets, in a manner that enhances the generalizability of each model, remains an open and challenging problem. In this paper, we address this issue by introducing a new learning paradigm, namely unified learning. To address the topological differences between these heterogeneous architectures, we first encode each model into a graph representation, enabling us to unify these diverse models within a shared graph learning space. Once represented in this space, a GNN guides the optimization of the unified models. By decoupling the parameters of individual deep learning models and controlling them through the unified GNN (uGNN), our approach enables parameter-sharing and knowledge-transfer across varying architectures (MLPs, CNNs and GNNs) and distributions, ultimately improving its generalizability. We evaluate our framework on MorphoMNIST and two MedMNIST benchmarks-PneumoniaMNIST and BreastMNIST-and find that our unified learning improves the performance of individual models when trained on unique distributions and tested on mixed ones, thereby demonstrating generalizability to unseen data with strong distributional shifts.*
+
 
 ---
 
@@ -71,8 +81,9 @@ source .venv/bin/activate
 ```
 
 ### 2) Install dependencies
-
+```bash
 pip install -r requirements.txt
+```
 
 PyTorch Geometric has CUDA-specific wheels. If you need a specific CUDA build, install PyTorch first from https://pytorch.org/get-started/locally/ and then:
 pip install torch-geometric
@@ -80,8 +91,9 @@ pip install torch-geometric
 ### 3) (Optional) Editable install
 
 If you want to `import ugnn` anywhere:
+```bash
 pip install -e .
-
+```
 ---
 
 ## Data
@@ -89,11 +101,11 @@ pip install -e .
 ### MedMNIST (PathMNIST example)
 
 The scripts will auto-download via `medmnist`. To create a **distribution shift** split used by uGNN (clusters), place your cluster index arrays here (or in the project root) as:
-
+```
 PathMNIST_cluster0.npy
 PathMNIST_cluster1.npy
 PathMNIST_cluster2.npy
-
+```
 Each `.npy` holds integer indices into the **train** split specifying which examples belong to a given cluster. Example shape: `(N_i,)`.
 
 > You control how clusters are formed (e.g., k-means in feature space, pathology groups, random shards). The training script only needs these index files.
@@ -105,7 +117,7 @@ Each `.npy` holds integer indices into the **train** split specifying which exam
 ### Baseline training (single model)
 
 Train one of the baselines on the clustered training batches:
-
+```bash
 python scripts/train_baseline.py \
   --seed 42 \
   --batch-size 1024 \
@@ -113,7 +125,7 @@ python scripts/train_baseline.py \
   --model-idx 2 \
   --lr 0.05 \
   --outdir outputs
-
+```
 - `--model-idx` chooses which baseline architecture to train (as instantiated in the script):  
   - `0`: `CNNClassifierDeep(in_channels=3, num_classes=9)`  
   - `1`: `CNNClassifier(in_channels=3, num_classes=9)`  
@@ -126,7 +138,7 @@ Artifacts:
 ### uGNN (weight-sharing) training
 
 Train the unified GNN that operates on the **disjoint union** of all model-graphs:
-
+```bash
 python scripts/train_ugnn_ws.py \
   --seed 42 \
   --batch-size 1024 \
@@ -139,7 +151,7 @@ python scripts/train_ugnn_ws.py \
   --act softsign \
   --scale 1.5 \
   --outdir outputs
-
+```
 Artifacts:
 - uGNN snapshot → `outputs/ugnn_ws.pt`
 - Best-per-model graph states (edge_attr/bias buffers) →  
@@ -149,9 +161,9 @@ Artifacts:
 ### Test the trained uGNN
 
 Evaluate the uGNN on the test split:
-
+```bash
 python scripts/test_ugnn.py --weights outputs/ugnn_ws.pt
-
+```
 This prints per-model weighted precision/recall/F1 as JSON.
 
 ---
