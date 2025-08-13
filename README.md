@@ -51,7 +51,7 @@ ugnn/
    ├─ train_ugnn_ws.py
    ├─ train_baseline.py
    └─ test_ugnn.py
-````
+```
 
 - `ugnn/models`: CNN/MLP baselines + uGNN variants (`UGNN`, `UGNN_WS`, `UGNNModelSpecific`)
 - `ugnn/graphs`: model→graph conversion (`convert.py`) and multi-model unification (`unify.py`)
@@ -70,7 +70,6 @@ python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-```
 ### 2) Install dependencies
 
 pip install -r requirements.txt
