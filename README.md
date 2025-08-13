@@ -210,15 +210,20 @@ This prints per-model weighted precision/recall/F1 as JSON.
 
 ## Command Reference
 
-### `scripts/train_baseline.py`
+```
+scripts/train_baseline.py
+
 --seed INT              # RNG seed
 --batch-size INT        # batch size (default: 1024)
 --epochs INT            # max epochs (default: 200)
 --model-idx {0,1,2}     # which predefined baseline to train
 --lr FLOAT              # learning rate (default: 0.05)
 --outdir PATH           # output directory (default: outputs)
+```
 
-### `scripts/train_ugnn_ws.py`
+```
+scripts/train_ugnn_ws.py
+
 --seed INT
 --batch-size INT
 --epochs INT
@@ -230,9 +235,13 @@ This prints per-model weighted precision/recall/F1 as JSON.
 --act {relu,softsign,scaled_tanh,scaled_softsign,...}
 --scale FLOAT           # scale for scaled activations
 --outdir PATH
+```
 
-### `scripts/test_ugnn.py`
+```
+scripts/test_ugnn.py
+
 --weights PATH          # load uGNN state_dict (optional)
+```
 
 ---
 
